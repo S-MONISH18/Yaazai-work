@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInUp, Layout } from 'react-native-reanimated';
-import { colors, typography, spacing } from '../../theme';
+import { colors, spacing } from '../../theme';
 import { useAuth } from '../../context/AuthContext';
 
 const { width } = Dimensions.get('window');
@@ -119,9 +119,9 @@ export default function DriverDashboardScreen({ navigation }: any) {
 
           <View style={styles.routeBox}>
             <View style={styles.routeIconLine}>
-              <View style={[styles.routeDot, { backgroundColor: '#4CAF50' }]} />
+              <View style={[styles.routeDot, styles.routeDotStart]} />
               <View style={styles.routeLine} />
-              <View style={[styles.routeDot, { backgroundColor: colors.danger }]} />
+              <View style={[styles.routeDot, styles.routeDotEnd]} />
             </View>
             <View style={styles.routeLabels}>
               <Text style={styles.routePoint} numberOfLines={1}>Pollachi Farm, Sector 2</Text>
@@ -149,19 +149,19 @@ export default function DriverDashboardScreen({ navigation }: any) {
         <Text style={styles.groupTitle}>Shortcuts</Text>
         <View style={styles.shortcutsRow}>
           <TouchableOpacity style={styles.shortcutCard} onPress={() => navigation.navigate('RegisterVehicle')}>
-            <View style={[styles.sIconBg, { backgroundColor: '#E3F2FD' }]}>
+            <View style={[styles.sIconBg, styles.sIconBgCompliance]}>
               <Text style={styles.sIcon}>📋</Text>
             </View>
             <Text style={styles.sLabel}>Compliance</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.shortcutCard} onPress={() => navigation.navigate('Vehicles')}>
-            <View style={[styles.sIconBg, { backgroundColor: '#E8F5E9' }]}>
+            <View style={[styles.sIconBg, styles.sIconBgFleet]}>
               <Text style={styles.sIcon}>🚛</Text>
             </View>
             <Text style={styles.sLabel}>Fleet</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.shortcutCard} onPress={() => Alert.alert('Support')}>
-            <View style={[styles.sIconBg, { backgroundColor: '#FFF3E0' }]}>
+            <View style={[styles.sIconBg, styles.sIconBgSupport]}>
               <Text style={styles.sIcon}>🎧</Text>
             </View>
             <Text style={styles.sLabel}>Support</Text>
@@ -381,6 +381,12 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
   },
+  routeDotStart: {
+    backgroundColor: '#4CAF50',
+  },
+  routeDotEnd: {
+    backgroundColor: colors.danger,
+  },
   routeLine: {
     width: 2,
     height: 30,
@@ -452,6 +458,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
+  sIconBgCompliance: { backgroundColor: '#E3F2FD' },
+  sIconBgFleet: { backgroundColor: '#E8F5E9' },
+  sIconBgSupport: { backgroundColor: '#FFF3E0' },
   sIcon: {
     fontSize: 20,
   },

@@ -10,15 +10,11 @@ import {
   KeyboardAvoidingView,
   Platform,
   StatusBar,
-  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Animated, { FadeInDown, FadeInRight, FadeOutLeft } from 'react-native-reanimated';
+import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 import { useAuth } from '../../context/AuthContext';
 import colors from '../../theme/colors';
-import spacing from '../../theme/spacing';
-
-const { width } = Dimensions.get('window');
 
 const roles = [
   { label: 'Farmer', value: 'farmer', icon: '🌾' },
@@ -27,7 +23,7 @@ const roles = [
 ];
 
 export default function SignupScreen({ navigation }: any) {
-  const { signup, isLoading } = useAuth();
+  const { signup } = useAuth();
   const [step, setStep] = useState(1);
 
   const [form, setForm] = useState({

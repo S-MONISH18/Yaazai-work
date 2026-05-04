@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -19,14 +20,16 @@ export default function App() {
     const interval = setInterval(() => {
       try {
         NativeModules?.RNAndroidWindowSecure?.clearSecureFlag?.();
-      } catch (e) {}
+      } catch {
+        // Ignore error
+      }
     }, 1000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={styles.container}>
       <SafeAreaProvider>
         <AuthProvider>
           <NavigationContainer>
@@ -37,3 +40,9 @@ export default function App() {
     </GestureHandlerRootView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

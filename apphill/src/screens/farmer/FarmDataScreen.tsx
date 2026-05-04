@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,14 +6,10 @@ import {
   ScrollView,
   RefreshControl,
   StatusBar,
-  Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import colors from '../../theme/colors';
-import spacing from '../../theme/spacing';
-
-const { width } = Dimensions.get('window');
-
 const SensorCard = ({ title, value, icon, unit, color, status }: any) => (
   <View style={styles.sensorCard}>
     <View style={[styles.sensorIconBg, { backgroundColor: color + '15' }]}>
@@ -25,15 +21,15 @@ const SensorCard = ({ title, value, icon, unit, color, status }: any) => (
         <Text style={styles.sensorValue}>{value}</Text>
         <Text style={styles.sensorUnit}>{unit}</Text>
       </View>
-      <View style={[styles.statusBadge, { backgroundColor: status === 'Optimal' ? '#E8F5E9' : '#FFF3E0' }]}>
-        <Text style={[styles.statusText, { color: status === 'Optimal' ? '#2E7D32' : '#EF6C00' }]}>{status}</Text>
+      <View style={[styles.statusBadge, status === 'Optimal' ? styles.statusOptimalBg : styles.statusWarningBg]}>
+        <Text style={[styles.statusText, status === 'Optimal' ? styles.statusOptimalText : styles.statusWarningText]}>{status}</Text>
       </View>
     </View>
   </View>
 );
 
 export default function FarmDataScreen() {
-  const [farmData, setFarmData] = useState({
+  const [farmData] = useState({
     nodeCount: 24,
     landArea: 15.5,
     activeNodes: 22,
@@ -282,10 +278,14 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 8,
   },
+  statusOptimalBg: { backgroundColor: '#E8F5E9' },
+  statusWarningBg: { backgroundColor: '#FFF3E0' },
   statusText: {
     fontSize: 11,
     fontWeight: '700',
   },
+  statusOptimalText: { color: '#2E7D32' },
+  statusWarningText: { color: '#EF6C00' },
   mapPreviewCard: {
     backgroundColor: '#FFFFFF',
     borderRadius: 24,

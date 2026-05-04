@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState } from 'react';
 import { 
   View, 
   StyleSheet, 
@@ -7,19 +7,16 @@ import {
   TouchableOpacity, 
   StatusBar, 
   TextInput,
-  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Animated, { FadeInUp, FadeInDown } from 'react-native-reanimated';
+import Animated, { FadeInUp } from 'react-native-reanimated';
 import MapComponent from '../../components/MapComponent';
 import BookingBottomSheet from '../../components/BookingBottomSheet';
 import { vehicleListings } from '../../data/mockData';
 import colors from '../../theme/colors';
 import spacing from '../../theme/spacing';
 
-const { width, height } = Dimensions.get('window');
-
-export default function CustomerDashboardScreen({ navigation }: any) {
+export default function CustomerDashboardScreen() {
   const [weight, setWeight] = useState('');
   const [search, setSearch] = useState('');
 
@@ -45,51 +42,55 @@ export default function CustomerDashboardScreen({ navigation }: any) {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
-      
-      {/* Floating Header UI */}
+
+      {/* Floating Header — Ola-style route planner card */}
       <SafeAreaView style={styles.floatingHeader} edges={['top']}>
-        <Animated.View entering={FadeInUp.delay(200).springify()} style={styles.searchContainer}>
-          <View style={styles.searchBar}>
-            <Text style={styles.searchIcon}>🔍</Text>
-            <TextInput 
-              style={styles.searchInput}
-              placeholder="Search destination market..."
+        <Animated.View entering={FadeInUp.delay(200).springify()} style={styles.routeCard}>
+          {/* Pickup row */}
+          <View style={styles.routeRow}>
+            <View style={styles.greenDot} />
+            <TextInput
+              style={styles.routeInput}
+              placeholder="Pickup location"
+              placeholderTextColor={colors.textMuted}
+              value="Pollachi Farm, Tamil Nadu"
+              editable={false}
+            />
+            <TouchableOpacity style={styles.clearBtn}>
+              <Text style={styles.clearText}>✕</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.routeDivider} />
+
+          {/* Destination row */}
+          <View style={styles.routeRow}>
+            <View style={styles.redDot} />
+            <TextInput
+              style={[styles.routeInput, styles.routeInputActive]}
+              placeholder="Where do you want to go?"
               placeholderTextColor={colors.textMuted}
               value={search}
               onChangeText={setSearch}
             />
-            <TouchableOpacity style={styles.filterBtn}>
-              <Text style={styles.filterIcon}>⚙️</Text>
+            <TouchableOpacity style={styles.swapBtn}>
+              <Text style={styles.swapIcon}>⇵</Text>
             </TouchableOpacity>
           </View>
-        </Animated.View>
-
-        <Animated.View entering={FadeInUp.delay(400).springify()} style={styles.locationChipContainer}>
-          <TouchableOpacity style={styles.locationChip}>
-            <Text style={styles.chipEmoji}>📍</Text>
-            <Text style={styles.chipText}>Pollachi Farm</Text>
-          </TouchableOpacity>
-          <View style={styles.chipArrow}>
-            <Text style={styles.arrowText}>→</Text>
-          </View>
-          <TouchableOpacity style={styles.locationChip}>
-            <Text style={styles.chipEmoji}>🛒</Text>
-            <Text style={styles.chipText}>Salem Market</Text>
-          </TouchableOpacity>
         </Animated.View>
       </SafeAreaView>
 
       {/* Map View */}
       <View style={styles.mapContainer}>
-        <MapComponent 
-          vehicles={vehicleListings} 
-          pickupLocation={pickupLocation} 
-          dropLocation={dropLocation} 
+        <MapComponent
+          vehicles={vehicleListings}
+          pickupLocation={pickupLocation}
+          dropLocation={dropLocation}
         />
       </View>
 
       {/* Bottom Sheet UI */}
-      <BookingBottomSheet 
+      <BookingBottomSheet
         weight={weight}
         setWeight={setWeight}
         estimatedPrice={1850}
@@ -113,85 +114,78 @@ const styles = StyleSheet.create({
     zIndex: 10,
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.sm,
+    paddingBottom: spacing.sm,
   },
-  searchContainer: {
-    marginBottom: spacing.sm,
+  // ── Route Card (Ola-style) ─────────────────────────────────
+  routeCard: {
+    backgroundColor: colors.surface,
+    borderRadius: 14,
+    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.md,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.10,
+    shadowRadius: 14,
+    elevation: 8,
+    borderWidth: 1,
+    borderColor: colors.borderLight,
   },
-  searchBar: {
+  routeRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFF',
-    borderRadius: 22,
-    paddingHorizontal: spacing.md,
-    height: 60,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.1,
-    shadowRadius: 20,
-    elevation: 10,
-    borderWidth: 1,
-    borderColor: '#F0F0F0',
+    paddingVertical: 10,
   },
-  searchIcon: {
-    fontSize: 18,
-    marginRight: spacing.xs,
+  routeDivider: {
+    height: 1,
+    backgroundColor: colors.borderLight,
+    marginLeft: 28,
   },
-  searchInput: {
+  greenDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '#2E7D32',
+    borderWidth: 2,
+    borderColor: '#A5D6A7',
+    marginRight: 12,
+    flexShrink: 0,
+  },
+  redDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: colors.danger,
+    borderWidth: 2,
+    borderColor: '#FFCDD2',
+    marginRight: 12,
+    flexShrink: 0,
+  },
+  routeInput: {
     flex: 1,
-    fontSize: 15,
-    fontWeight: '600',
+    fontSize: 14,
+    fontWeight: '500',
     color: colors.text,
     paddingVertical: 0,
   },
-  filterBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    backgroundColor: colors.surfaceSecondary,
-    justifyContent: 'center',
-    alignItems: 'center',
+  routeInputActive: {
+    color: colors.textMuted,
   },
-  filterIcon: {
-    fontSize: 16,
+  clearBtn: {
+    padding: 4,
   },
-  locationChipContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 10,
-  },
-  locationChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#EEE',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 4,
-  },
-  chipEmoji: {
+  clearText: {
     fontSize: 14,
-    marginRight: 6,
+    color: colors.textMuted,
   },
-  chipText: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: colors.text,
+  swapBtn: {
+    padding: 4,
   },
-  chipArrow: {
-    opacity: 0.6,
-  },
-  arrowText: {
+  swapIcon: {
     fontSize: 18,
-    fontWeight: '900',
     color: colors.primary,
+    fontWeight: '700',
   },
+  // ── Map ────────────────────────────────────────────────────
   mapContainer: {
     flex: 1,
   },

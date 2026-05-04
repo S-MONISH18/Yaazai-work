@@ -1,12 +1,11 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Alert } from 'react-native';
-
+import React, { createContext, useContext, useState } from 'react';
 interface User {
   name: string;
   phone: string;
   role: string;
   location?: string;
   joinDate?: string;
+  email?: string;
 }
 
 interface AuthContextType {

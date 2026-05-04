@@ -43,7 +43,7 @@ export default function BookingBottomSheet({
           placeholder="Min 25kg"
         />
 
-        {parseInt(weight || '0') > 0 && parseInt(weight || '0') < 25 && (
+        {parseInt(weight || '0', 10) > 0 && parseInt(weight || '0', 10) < 25 && (
           <Text style={styles.errorText}>⚠️ Minimum load weight is 25kg.</Text>
         )}
 
@@ -62,14 +62,14 @@ export default function BookingBottomSheet({
         <PrimaryButton
           title="Confirm Booking"
           onPress={() => {
-            if (parseInt(weight || '0') < 25) {
+            if (parseInt(weight || '0', 10) < 25) {
               Alert.alert('Invalid Weight', 'Load weight must be at least 25kg.');
               return;
             }
             onBook();
           }}
-          style={{ marginTop: 12 }}
-          disabled={parseInt(weight || '0') < 25}
+          style={styles.btnSpacing}
+          disabled={parseInt(weight || '0', 10) < 25}
         />
       </BottomSheetView>
     </BottomSheet>
@@ -136,5 +136,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     color: colors.text,
+  },
+  btnSpacing: {
+    marginTop: 12,
   },
 });

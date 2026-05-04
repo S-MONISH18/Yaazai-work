@@ -12,7 +12,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import { vehicleListings } from '../../data/mockData';
 import colors from '../../theme/colors';
-import spacing from '../../theme/spacing';
 
 export default function AvailableVehiclesScreen() {
   const navigation = useNavigation();

@@ -19,7 +19,7 @@ export default function CustomerStackNavigator() {
 
       {/* Booking Screen */}
       <Stack.Screen
-        name="BookVehicleScreen"
+        name="BookVehicle"
         component={BookVehicleScreen}
         options={{ title: 'Book Vehicle' }}
       />

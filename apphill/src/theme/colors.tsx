@@ -2,6 +2,7 @@ const colors = {
   // Brand
   primary: '#184A1D',      // Deep Forest Green
   primaryLight: '#C8E6C9', // Soft Mint
+  primarySoft: '#E8F5E9',  // Very Soft Mint
   primaryDark: '#0D2E11',  // Darker Forest
   accent: '#4CAF50',       // Vibrant Leaf Green
   gold: '#F9A825',         // Premium Gold
@@ -18,6 +19,7 @@ const colors = {
   
   // Status
   success: '#2E7D32',
+  successLight: '#A5D6A7', // Light green
   warning: '#FFA000',
   error: '#D32F2F',
   danger: '#D32F2F',

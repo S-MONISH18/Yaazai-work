@@ -6,7 +6,7 @@ import FarmerTabNavigator from './FarmerTabNavigator';
 import DriverTabNavigator from './DriverNavigator'; // ✅ file is DriverNavigator.tsx
 import CustomerStackNavigator from './CustomerStackNavigator';
 
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import colors from '../theme/colors';
 
 export default function RootNavigator() {
@@ -14,7 +14,7 @@ export default function RootNavigator() {
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.primary }}>
+      <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#FFF" />
       </View>
     );
@@ -43,3 +43,12 @@ export default function RootNavigator() {
   // fallback
   return <AuthNavigator />;
 }
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.primary,
+  },
+});

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -12,7 +13,7 @@ const Tab = createBottomTabNavigator();
 
 const TabIcon = ({ symbol, color, focused }: { symbol: string; color: string; focused: boolean }) => (
   <View style={[styles.iconContainer, focused && styles.activeIconContainer]}>
-    <Text style={{ fontSize: 20, color }}>{symbol}</Text>
+    <Text style={[styles.tabIconText, { color }]}>{symbol}</Text>
   </View>
 );
 
@@ -100,5 +101,8 @@ const styles = StyleSheet.create({
   },
   activeIconContainer: {
     backgroundColor: colors.primarySoft,
+  },
+  tabIconText: {
+    fontSize: 20,
   },
 });

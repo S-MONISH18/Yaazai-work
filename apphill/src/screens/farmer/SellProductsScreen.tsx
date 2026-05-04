@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { ScrollView, Text, StyleSheet, View, Alertttt } from 'react-native';
+import { ScrollView, Text, StyleSheet, View, Alert, StatusBar, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import colors from '../../theme/colors';
 import spacing from '../../theme/spacing';
-import typography from '../../theme/typography';
 import AppCard from '../../components/AppCard';
 import InputField from '../../components/InputField';
-import PrimaryButton from '../../components/PrimaryButton';
 
 export default function SellProductsScreen() {
   const [form, setForm] = useState({
@@ -56,7 +54,7 @@ export default function SellProductsScreen() {
             onChangeText={value => updateField('productName', value)}
           />
           <View style={styles.row}>
-            <View style={{ flex: 1, marginRight: 8 }}>
+            <View style={styles.colLeft}>
               <InputField
                 label="Category *"
                 placeholder="Vegetable"
@@ -64,7 +62,7 @@ export default function SellProductsScreen() {
                 onChangeText={value => updateField('category', value)}
               />
             </View>
-            <View style={{ flex: 1, marginLeft: 8 }}>
+            <View style={styles.colRight}>
               <InputField
                 label="Stock (kg) *"
                 placeholder="500"
@@ -136,6 +134,8 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
   },
+  colLeft: { flex: 1, marginRight: 8 },
+  colRight: { flex: 1, marginLeft: 8 },
   uploadBtn: {
     backgroundColor: colors.primary,
     borderRadius: 20,

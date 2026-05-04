@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colors, typography } from '../theme';
+import { colors } from '../theme';
 
 interface PaymentBreakdownProps {
   amount: number;
@@ -16,7 +16,7 @@ export default function PaymentBreakdown({ amount, status }: PaymentBreakdownPro
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Payment Distribution</Text>
-        <View style={[styles.statusBadge, { backgroundColor: status === 'Released' ? colors.success : colors.warning }]}>
+        <View style={[styles.statusBadge, status === 'Released' ? styles.statusBadgeReleased : styles.statusBadgeWarning]}>
           <Text style={styles.statusText}>{status || 'IN ESCROW'}</Text>
         </View>
       </View>
@@ -76,6 +76,8 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 8,
   },
+  statusBadgeReleased: { backgroundColor: colors.success },
+  statusBadgeWarning: { backgroundColor: colors.warning },
   statusText: {
     fontSize: 10,
     fontWeight: '800',

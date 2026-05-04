@@ -5,17 +5,15 @@ import {
   ScrollView, 
   StyleSheet, 
   Alert, 
-  TouchableOpacity, 
+  TouchableOpacity,
   StatusBar,
-  Dimensions,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import ProofUpload from '../../components/ProofUpload';
 import PaymentBreakdown from '../../components/PaymentBreakdown';
 import colors from '../../theme/colors';
-
-const { width } = Dimensions.get('window');
 
 const STEPS = ['Assigned', 'Arriving', 'Loading', 'In Transit', 'Unloading', 'Completed'];
 

@@ -15,11 +15,10 @@ import NetInfo from '@react-native-community/netinfo';
 
 import { farmerProducts } from '../../data/mockData';
 import colors from '../../theme/colors';
-import spacing from '../../theme/spacing';
 
 export default function BuyProductsScreen() {
   const [isOfflineMode, setIsOfflineMode] = useState(false);
-  const [products, setProducts] = useState(farmerProducts);
+  const [products] = useState(farmerProducts);
   const [currentIP, setCurrentIP] = useState<string | null>(null);
 
   const LOCAL_IP = '192.168.1.100';
@@ -88,7 +87,7 @@ export default function BuyProductsScreen() {
       >
         <Text style={styles.sectionTitle}>Fresh Produce</Text>
         
-        {products.map((item, index) => (
+        {products.map((item) => (
           <View key={item.id} style={styles.productCard}>
             <Image source={{ uri: item.image }} style={styles.productImage} />
             <View style={styles.productInfo}>

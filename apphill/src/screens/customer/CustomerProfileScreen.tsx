@@ -8,22 +8,24 @@ import typography from '../../theme/typography';
 import AppCard from '../../components/AppCard';
 import { useAuth } from '../../context/AuthContext';
 
-export default function CustomerProfileScreen({ navigation }) {
+const MenuOption = ({ icon, label, onPress, showArrow = true }: any) => (
+  <TouchableOpacity style={styles.menuOption} onPress={onPress}>
+    <View style={styles.menuLeft}>
+      <Icon name={icon} size={24} color={colors.primary} style={styles.menuIcon} />
+      <Text style={[typography.body, styles.menuLabel]}>{label}</Text>
+    </View>
+    {showArrow && <Icon name="chevron-right" size={24} color={colors.textSecondary} />}
+  </TouchableOpacity>
+);
+
+export default function CustomerProfileScreen() {
   const { currentUser, logout } = useAuth();
 
   const handleLogout = () => {
     logout();
   };
 
-  const MenuOption = ({ icon, label, onPress, showArrow = true }) => (
-    <TouchableOpacity style={styles.menuOption} onPress={onPress}>
-      <View style={styles.menuLeft}>
-        <Icon name={icon} size={24} color={colors.primary} style={styles.menuIcon} />
-        <Text style={[typography.body, styles.menuLabel]}>{label}</Text>
-      </View>
-      {showArrow && <Icon name="chevron-right" size={24} color={colors.textSecondary} />}
-    </TouchableOpacity>
-  );
+
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>

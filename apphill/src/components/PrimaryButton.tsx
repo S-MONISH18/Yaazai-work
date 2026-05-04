@@ -26,19 +26,25 @@ export default function PrimaryButton({ title, onPress, style, textStyle, disabl
 
 const styles = StyleSheet.create({
   button: {
-    height: 50,
-    borderRadius: 14,
+    height: 56,
+    borderRadius: 12,
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: spacing.lg,
+    paddingHorizontal: spacing.xl,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 6,
   },
   disabledButton: {
-    opacity: 0.6,
+    opacity: 0.55,
   },
   buttonText: {
     color: colors.surface,
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '700',
+    letterSpacing: 0.3,
   },
 });

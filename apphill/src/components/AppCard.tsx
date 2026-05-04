@@ -12,8 +12,8 @@ interface AppCardProps {
 export default function AppCard({ children, style, noPadding = false }: AppCardProps) {
   return (
     <View style={[
-      styles.card, 
-      noPadding && { padding: 0 }, 
+      styles.card,
+      noPadding && styles.noPadding,
       style
     ]}>
       {children}
@@ -24,14 +24,17 @@ export default function AppCard({ children, style, noPadding = false }: AppCardP
 const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.surface,
-    borderRadius: 24,
+    borderRadius: 16,
     borderWidth: 1,
     borderColor: colors.borderLight,
     padding: spacing.lg,
     shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 15,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 3,
+    shadowOpacity: 0.04,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
+  },
+  noPadding: {
+    padding: 0,
   },
 });

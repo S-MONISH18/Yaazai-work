@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -7,7 +8,7 @@ import colors from '../theme/colors';
 
 // Screens
 import FarmerDashboardScreen from '../screens/farmer/FarmerDashboardScreen';
-import FarmDataScreen from '../screens/farmer/FarmDataScreen';
+
 import AvailableVehiclesScreen from '../screens/farmer/AvailableVehiclesScreen';
 import SellProductsScreen from '../screens/farmer/SellProductsScreen';
 import FarmerProfileScreen from '../screens/farmer/FarmerProfileScreen';
@@ -18,7 +19,7 @@ const Stack = createNativeStackNavigator();
 
 const TabIcon = ({ symbol, color, focused }: { symbol: string; color: string; focused: boolean }) => (
   <View style={[styles.iconContainer, focused && styles.activeIconContainer]}>
-    <Text style={{ fontSize: 20, color }}>{symbol}</Text>
+    <Text style={[styles.iconText, { color }]}>{symbol}</Text>
   </View>
 );
 
@@ -58,14 +59,6 @@ export default function FarmerTabNavigator() {
         }}
       />
 
-      <Tab.Screen
-        name="FarmData"
-        component={FarmDataScreen}
-        options={{
-          tabBarLabel: 'Stats',
-          tabBarIcon: (props) => <TabIcon symbol="📊" {...props} />,
-        }}
-      />
 
       <Tab.Screen
         name="Vehicles"
@@ -130,5 +123,8 @@ const styles = StyleSheet.create({
   },
   activeIconContainer: {
     backgroundColor: colors.primarySoft,
+  },
+  iconText: {
+    fontSize: 20,
   },
 });

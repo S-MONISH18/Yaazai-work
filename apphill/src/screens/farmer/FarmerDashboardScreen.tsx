@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -31,22 +31,20 @@ export default function FarmerDashboardScreen({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
-      
-      {/* Premium Header */}
-      <View style={styles.header}>
-        <SafeAreaView edges={['top']}>
-          <View style={styles.headerContent}>
-            <View>
-              <Text style={styles.greetingText}>Welcome back,</Text>
-              <Text style={styles.nameText}>{currentUser?.name || 'Siva Kumar'}</Text>
-            </View>
-            <TouchableOpacity style={styles.profileCircle}>
-              <Text style={styles.profileEmoji}>👨‍🌾</Text>
-            </TouchableOpacity>
+      <StatusBar barStyle="dark-content" backgroundColor={colors.surface} />
+
+      {/* Clean White Header */}
+      <SafeAreaView style={styles.header} edges={['top']}>
+        <View style={styles.headerContent}>
+          <View>
+            <Text style={styles.greetingText}>Welcome back 👋</Text>
+            <Text style={styles.nameText}>{currentUser?.name || 'Siva Kumar'}</Text>
           </View>
-        </SafeAreaView>
-      </View>
+          <TouchableOpacity style={styles.profileCircle}>
+            <Text style={styles.profileEmoji}>👨‍🌾</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
 
       <ScrollView 
         showsVerticalScrollIndicator={false}
@@ -111,7 +109,7 @@ export default function FarmerDashboardScreen({ navigation }: any) {
           </TouchableOpacity>
           
           <TouchableOpacity 
-            style={[styles.actionCard, { backgroundColor: '#2E7D32' }]}
+            style={[styles.actionCard, styles.actionCardSell]}
             onPress={() => navigation.navigate('SellProducts')}
           >
             <Text style={styles.actionEmoji}>🏷️</Text>
@@ -184,49 +182,49 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   header: {
-    backgroundColor: colors.primary,
-    paddingBottom: 40,
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
+    backgroundColor: colors.surface,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.borderLight,
   },
   headerContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingTop: 20,
+    paddingHorizontal: 20,
+    paddingTop: 12,
+    paddingBottom: 14,
   },
   greetingText: {
-    fontSize: 14,
-    color: 'rgba(255,255,255,0.7)',
-    fontWeight: '600',
+    fontSize: 13,
+    color: colors.textSecondary,
+    fontWeight: '500',
   },
   nameText: {
-    fontSize: 24,
-    color: '#FFF',
+    fontSize: 20,
+    color: colors.text,
     fontWeight: '800',
+    marginTop: 2,
   },
   profileCircle: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    backgroundColor: colors.primarySoft,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1.5,
-    borderColor: 'rgba(255,255,255,0.4)',
+    borderColor: colors.border,
   },
   profileEmoji: {
-    fontSize: 24,
+    fontSize: 22,
   },
   scrollContent: {
     paddingBottom: 120,
-    paddingTop: spacing.sm,
+    paddingTop: spacing.lg,
   },
   statsRow: {
     flexDirection: 'row',
     paddingHorizontal: spacing.lg,
-    marginTop: -30,
     justifyContent: 'space-between',
   },
   statCard: {
@@ -386,6 +384,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 12,
     elevation: 6,
+  },
+  actionCardSell: {
+    backgroundColor: '#2E7D32',
   },
   actionEmoji: {
     fontSize: 32,

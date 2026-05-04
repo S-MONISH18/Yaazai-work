@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -12,13 +13,14 @@ import MyVehiclesScreen from '../screens/driver/MyVehiclesScreen';
 import TripRequestsScreen from '../screens/driver/TripRequestsScreen';
 import DriverProfileScreen from '../screens/driver/DriverProfileScreen';
 import ActiveTripScreen from '../screens/driver/ActiveTripScreen';
+import BookVehicleScreen from '../screens/driver/BookVehicleScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const TabIcon = ({ symbol, color, focused }: { symbol: string; color: string; focused: boolean }) => (
   <View style={[styles.iconContainer, focused && styles.activeIconContainer]}>
-    <Text style={{ fontSize: 20, color }}>{symbol}</Text>
+    <Text style={[styles.tabIconText, { color }]}>{symbol}</Text>
   </View>
 );
 
@@ -27,6 +29,15 @@ function DriverHomeStack() {
     <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
       <Stack.Screen name="DriverDashboard" component={DriverDashboardScreen} />
       <Stack.Screen name="ActiveTrip" component={ActiveTripScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function DriverVehicleStack() {
+  return (
+    <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="MyVehiclesList" component={MyVehiclesScreen} />
+      <Stack.Screen name="BookVehicle" component={BookVehicleScreen} />
     </Stack.Navigator>
   );
 }
@@ -63,7 +74,7 @@ export default function DriverNavigator() {
 
       <Tab.Screen
         name="Vehicles"
-        component={MyVehiclesScreen}
+        component={DriverVehicleStack}
         options={{
           tabBarLabel: 'Fleet',
           tabBarIcon: (props) => <TabIcon symbol="🚚" {...props} />,
@@ -124,5 +135,8 @@ const styles = StyleSheet.create({
   },
   activeIconContainer: {
     backgroundColor: colors.primarySoft,
+  },
+  tabIconText: {
+    fontSize: 20,
   },
 });

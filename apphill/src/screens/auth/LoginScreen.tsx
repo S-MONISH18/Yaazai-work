@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -17,7 +17,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { 
   FadeInDown, 
   FadeInUp, 
-  useAnimatedStyle, 
   useSharedValue, 
   withSpring, 
   withSequence, 
@@ -27,7 +26,7 @@ import { useAuth } from '../../context/AuthContext';
 import colors from '../../theme/colors';
 import spacing from '../../theme/spacing';
 
-const { width, height } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 const roles = [
   { label: 'Farmer', value: 'farmer', emoji: '🌾' },
@@ -125,7 +124,7 @@ export default function LoginScreen({ navigation }: any) {
                 <Text style={styles.inputLabel}>Password</Text>
                 <View style={styles.passwordRow}>
                   <TextInput
-                    style={[styles.input, { flex: 1 }]}
+                    style={[styles.input, styles.passwordInput]}
                     placeholder="••••••••"
                     placeholderTextColor={colors.textMuted}
                     value={password}
@@ -320,6 +319,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.text,
     fontWeight: '600',
+  },
+  passwordInput: {
+    flex: 1,
   },
   passwordRow: {
     flexDirection: 'row',
