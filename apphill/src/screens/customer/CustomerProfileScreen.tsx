@@ -1,276 +1,225 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import colors from '../../theme/colors';
-import spacing from '../../theme/spacing';
-import typography from '../../theme/typography';
-import AppCard from '../../components/AppCard';
 import { useAuth } from '../../context/AuthContext';
 
-const MenuOption = ({ icon, label, onPress, showArrow = true }: any) => (
-  <TouchableOpacity style={styles.menuOption} onPress={onPress}>
+// ─── Menu Row ─────────────────────────────────────────────────────────────────
+const MenuOption = ({ icon, label, onPress }: { icon: string; label: string; onPress: () => void }) => (
+  <TouchableOpacity style={styles.menuOption} onPress={onPress} activeOpacity={0.7}>
     <View style={styles.menuLeft}>
-      <Icon name={icon} size={24} color={colors.primary} style={styles.menuIcon} />
-      <Text style={[typography.body, styles.menuLabel]}>{label}</Text>
+      <Text style={styles.menuIcon}>{icon}</Text>
+      <Text style={styles.menuLabel}>{label}</Text>
     </View>
-    {showArrow && <Icon name="chevron-right" size={24} color={colors.textSecondary} />}
+    <Text style={styles.menuArrow}>›</Text>
   </TouchableOpacity>
 );
 
 export default function CustomerProfileScreen() {
   const { currentUser, logout } = useAuth();
 
+  const joinFormatted = currentUser?.joinDate
+    ? new Date(currentUser.joinDate).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })
+    : 'Jan 2024';
+
   const handleLogout = () => {
-    logout();
+    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Sign Out', style: 'destructive', onPress: logout },
+    ]);
   };
 
-
+  const initials = currentUser?.name
+    ? currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+    : 'C';
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
-        {/* Profile Header */}
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
+
+        {/* ── Profile Header ── */}
         <View style={styles.profileHeader}>
           <View style={styles.avatar}>
-            <Text style={styles.avatarText}>
-              {currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : 'C'}
-            </Text>
+            <Text style={styles.avatarText}>{initials}</Text>
           </View>
-
-          <Text style={[typography.h2, styles.name]}>
-            {currentUser?.name || 'Customer'}
-          </Text>
-
+          <Text style={styles.name}>{currentUser?.name || 'Customer'}</Text>
           <View style={styles.roleTag}>
-            <Icon name="account-check" size={16} color={colors.primary} />
-            <Text style={[typography.label, styles.roleText]}>
-              {currentUser?.role ? currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1) : 'Customer'}
-            </Text>
+            <Text style={styles.roleTagText}>🛒 Customer</Text>
           </View>
         </View>
 
-        {/* Account Information Card */}
-        <AppCard style={styles.section}>
-          <Text style={[typography.h4, styles.sectionTitle]}>Account Information</Text>
-          
+        {/* ── Account Info ── */}
+        <View style={styles.card}>
+          <Text style={styles.sectionTitle}>Account Information</Text>
+
           <View style={styles.infoRow}>
-            <Icon name="phone" size={22} color={colors.primary} style={styles.infoIcon} />
+            <View style={styles.infoIconWrap}><Text style={styles.infoIconText}>📱</Text></View>
             <View style={styles.infoContent}>
-              <Text style={[typography.label, styles.infoLabel]}>Phone Number</Text>
-              <Text style={[typography.body, styles.infoValue]}>
-                {currentUser?.phone || 'Not Available'}
-              </Text>
+              <Text style={styles.infoLabel}>Phone Number</Text>
+              <Text style={styles.infoValue}>{currentUser?.phone || 'Not Available'}</Text>
             </View>
           </View>
 
           <View style={styles.divider} />
 
           <View style={styles.infoRow}>
-            <Icon name="email" size={22} color={colors.primary} style={styles.infoIcon} />
+            <View style={styles.infoIconWrap}><Text style={styles.infoIconText}>📧</Text></View>
             <View style={styles.infoContent}>
-              <Text style={[typography.label, styles.infoLabel]}>Email</Text>
-              <Text style={[typography.body, styles.infoValue]}>
-                {currentUser?.email || 'Not Available'}
-              </Text>
+              <Text style={styles.infoLabel}>Email</Text>
+              <Text style={styles.infoValue}>{currentUser?.email || 'Not set'}</Text>
             </View>
           </View>
 
           <View style={styles.divider} />
 
           <View style={styles.infoRow}>
-            <Icon name="calendar" size={22} color={colors.primary} style={styles.infoIcon} />
+            <View style={styles.infoIconWrap}><Text style={styles.infoIconText}>📍</Text></View>
             <View style={styles.infoContent}>
-              <Text style={[typography.label, styles.infoLabel]}>Member Since</Text>
-              <Text style={[typography.body, styles.infoValue]}>
-                {currentUser?.joinDate || 'Jan 2024'}
-              </Text>
+              <Text style={styles.infoLabel}>Location</Text>
+              <Text style={styles.infoValue}>{currentUser?.location || 'Not set'}</Text>
             </View>
           </View>
-        </AppCard>
 
-        {/* Quick Actions */}
-        <AppCard style={styles.section}>
-          <Text style={[typography.h4, styles.sectionTitle]}>Quick Actions</Text>
-          <MenuOption icon="pencil-outline" label="Edit Profile" onPress={() => {}} />
-          <MenuOption icon="map-marker" label="Saved Addresses" onPress={() => {}} />
-          <MenuOption icon="heart-outline" label="Favorites" onPress={() => {}} />
-          <MenuOption icon="history" label="Order History" onPress={() => {}} showArrow={true} />
-        </AppCard>
+          <View style={styles.divider} />
 
-        {/* Settings & Support */}
-        <AppCard style={styles.section}>
-          <Text style={[typography.h4, styles.sectionTitle]}>Settings & Support</Text>
-          <MenuOption icon="bell-outline" label="Notifications" onPress={() => {}} />
-          <MenuOption icon="lock-outline" label="Privacy & Security" onPress={() => {}} />
-          <MenuOption icon="help-circle-outline" label="Help & Support" onPress={() => {}} />
-          <MenuOption icon="information-outline" label="About" onPress={() => {}} showArrow={true} />
-        </AppCard>
+          <View style={styles.infoRow}>
+            <View style={styles.infoIconWrap}><Text style={styles.infoIconText}>📅</Text></View>
+            <View style={styles.infoContent}>
+              <Text style={styles.infoLabel}>Member Since</Text>
+              <Text style={styles.infoValue}>{joinFormatted}</Text>
+            </View>
+          </View>
+        </View>
 
-        {/* Action Buttons */}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.editButton}>
-            <Icon name="pencil-outline" size={20} color={colors.primary} />
-            <Text style={[typography.body, styles.editButtonText]}>Edit Profile</Text>
-          </TouchableOpacity>
+        {/* ── Quick Actions ── */}
+        <View style={styles.card}>
+          <Text style={styles.sectionTitle}>Quick Actions</Text>
+          <MenuOption icon="✏️" label="Edit Profile" onPress={() => Alert.alert('Coming Soon', 'Edit profile coming soon.')} />
+          <View style={styles.divider} />
+          <MenuOption icon="📦" label="My Orders" onPress={() => Alert.alert('Coming Soon', 'Order history coming soon.')} />
+          <View style={styles.divider} />
+          <MenuOption icon="❤️" label="Favourites" onPress={() => Alert.alert('Coming Soon', 'Favourites coming soon.')} />
+          <View style={styles.divider} />
+          <MenuOption icon="🗺️" label="Saved Addresses" onPress={() => Alert.alert('Coming Soon', 'Addresses coming soon.')} />
+        </View>
 
-          <TouchableOpacity style={styles.signOutButton} onPress={handleLogout}>
-            <Icon name="power" size={20} color={colors.surface} />
-            <Text style={[typography.body, styles.signOutText]}>Sign Out</Text>
+        {/* ── Settings ── */}
+        <View style={styles.card}>
+          <Text style={styles.sectionTitle}>Settings & Support</Text>
+          <MenuOption icon="🔔" label="Notifications" onPress={() => Alert.alert('Coming Soon', 'Notifications coming soon.')} />
+          <View style={styles.divider} />
+          <MenuOption icon="🔒" label="Privacy & Security" onPress={() => Alert.alert('Coming Soon', 'Privacy settings coming soon.')} />
+          <View style={styles.divider} />
+          <MenuOption icon="❓" label="Help & Support" onPress={() => Alert.alert('Support', 'Contact: support@smarthill.in')} />
+          <View style={styles.divider} />
+          <MenuOption icon="ℹ️" label="About App" onPress={() => Alert.alert('SmartHill', 'Version 1.0.0\nPremium Agri-Logistics Platform')} />
+        </View>
+
+        {/* ── Buttons ── */}
+        <View style={styles.btnGroup}>
+          <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
+            <Text style={styles.logoutBtnText}>🚪 Sign Out</Text>
           </TouchableOpacity>
         </View>
 
-        <View style={styles.footer} />
+        <Text style={styles.version}>SmartHill v1.0.0</Text>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  scroll: {
-    flex: 1,
-  },
+  container: { flex: 1, backgroundColor: colors.background },
+  scroll: { paddingBottom: 100 },
+
   profileHeader: {
     alignItems: 'center',
-    paddingVertical: spacing.xl,
-    paddingHorizontal: spacing.lg,
-    marginBottom: spacing.md,
+    paddingTop: 24,
+    paddingBottom: 28,
+    paddingHorizontal: 24,
   },
   avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 96,
+    height: 96,
+    borderRadius: 48,
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: spacing.lg,
+    marginBottom: 14,
     shadowColor: colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
     elevation: 8,
   },
-  avatarText: {
-    color: colors.surface,
-    fontSize: 40,
-    fontWeight: '700',
-  },
-  name: {
-    color: colors.text,
-    marginBottom: spacing.sm,
-    textAlign: 'center',
-  },
+  avatarText: { color: '#FFF', fontSize: 36, fontWeight: '800' },
+  name: { fontSize: 22, fontWeight: '900', color: colors.text, marginBottom: 8 },
   roleTag: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.primary + '15',
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+    backgroundColor: colors.primarySoft,
+    paddingHorizontal: 14,
+    paddingVertical: 6,
     borderRadius: 20,
-    gap: spacing.xs,
   },
-  roleText: {
-    color: colors.primary,
-    fontWeight: '600',
-  },
-  section: {
-    marginHorizontal: spacing.lg,
-    marginBottom: spacing.lg,
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
+  roleTagText: { fontSize: 13, fontWeight: '700', color: colors.primary },
+
+  card: {
+    backgroundColor: '#FFF',
+    marginHorizontal: 16,
+    marginBottom: 14,
+    borderRadius: 20,
+    padding: 18,
+    borderWidth: 1,
+    borderColor: colors.borderLight,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.04,
+    shadowRadius: 8,
+    elevation: 2,
   },
   sectionTitle: {
-    color: colors.text,
-    marginBottom: spacing.md,
-    fontWeight: '600',
+    fontSize: 13,
+    fontWeight: '800',
+    color: colors.textMuted,
+    letterSpacing: 0.8,
+    textTransform: 'uppercase',
+    marginBottom: 14,
   },
-  infoRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    paddingVertical: spacing.sm,
-    gap: spacing.md,
+
+  infoRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10, gap: 12 },
+  infoIconWrap: {
+    width: 38, height: 38, borderRadius: 12,
+    backgroundColor: colors.surfaceSecondary,
+    justifyContent: 'center', alignItems: 'center',
   },
-  infoIcon: {
-    marginTop: spacing.xs,
-  },
-  infoContent: {
-    flex: 1,
-  },
-  infoLabel: {
-    color: colors.textSecondary,
-    marginBottom: spacing.xs / 2,
-  },
-  infoValue: {
-    color: colors.text,
-    fontWeight: '500',
-  },
-  divider: {
-    height: 1,
-    backgroundColor: colors.borderLight,
-    marginVertical: spacing.sm,
-  },
+  infoIconText: { fontSize: 18 },
+  infoContent: { flex: 1 },
+  infoLabel: { fontSize: 11, fontWeight: '700', color: colors.textMuted, marginBottom: 2 },
+  infoValue: { fontSize: 15, fontWeight: '600', color: colors.text },
+
+  divider: { height: 1, backgroundColor: colors.borderLight, marginVertical: 2 },
+
   menuOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.md,
-    marginHorizontal: -spacing.md,
-    borderRadius: 12,
+    flexDirection: 'row', alignItems: 'center',
+    justifyContent: 'space-between', paddingVertical: 12,
   },
-  menuLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.md,
-  },
-  menuIcon: {
-    width: 24,
-  },
-  menuLabel: {
-    color: colors.text,
-    fontWeight: '500',
-    flex: 1,
-  },
-  buttonContainer: {
-    paddingHorizontal: spacing.lg,
-    gap: spacing.md,
-    marginBottom: spacing.xl,
-  },
-  editButton: {
-    height: 50,
-    borderRadius: 14,
-    backgroundColor: colors.surface,
-    borderWidth: 2,
-    borderColor: colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    gap: spacing.sm,
-  },
-  editButtonText: {
-    color: colors.primary,
-    fontWeight: '700',
-    fontSize: 16,
-  },
-  signOutButton: {
-    height: 50,
-    borderRadius: 14,
+  menuLeft: { flexDirection: 'row', alignItems: 'center', gap: 14 },
+  menuIcon: { fontSize: 20 },
+  menuLabel: { fontSize: 15, fontWeight: '600', color: colors.text },
+  menuArrow: { fontSize: 22, color: colors.textMuted, fontWeight: '300' },
+
+  btnGroup: { marginHorizontal: 16, marginTop: 6 },
+  logoutBtn: {
     backgroundColor: colors.danger,
+    borderRadius: 18,
+    paddingVertical: 16,
     alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    gap: spacing.sm,
+    shadowColor: colors.danger,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 4,
   },
-  signOutText: {
-    color: colors.surface,
-    fontWeight: '700',
-    fontSize: 16,
-  },
-  footer: {
-    height: spacing.xl,
-  },
+  logoutBtnText: { color: '#FFF', fontSize: 16, fontWeight: '800' },
+
+  version: { textAlign: 'center', color: colors.textMuted, fontSize: 12, marginTop: 20, fontWeight: '500' },
 });

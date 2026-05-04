@@ -49,14 +49,19 @@ export default function SignupScreen({ navigation }: any) {
   };
 
   const handleSignup = () => {
-    if (!form.password || !form.location) {
-      Alert.alert('Required', 'Please complete all fields');
+    if (!form.password || form.password.length < 4) {
+      Alert.alert('Required', 'Password must be at least 4 characters');
+      return;
+    }
+    if (!form.location) {
+      Alert.alert('Required', 'Please enter your location');
       return;
     }
     const result = signup(form);
-    if (result.success) {
-      Alert.alert('Welcome!', 'Your account has been created successfully.');
+    if (!result.success) {
+      Alert.alert('Error', result.message || 'Signup failed. Try again.');
     }
+    // On success, AuthContext sets currentUser → RootNavigator auto-navigates
   };
 
   return (
@@ -101,7 +106,8 @@ export default function SignupScreen({ navigation }: any) {
                 <Text style={styles.inputLabel}>Full Name</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="John Doe"
+                  placeholder="e.g. Siva Kumar"
+                  placeholderTextColor={colors.textMuted}
                   value={form.name}
                   onChangeText={(v) => updateField('name', v)}
                 />
@@ -112,6 +118,7 @@ export default function SignupScreen({ navigation }: any) {
                 <TextInput
                   style={styles.input}
                   placeholder="98765 43210"
+                  placeholderTextColor={colors.textMuted}
                   keyboardType="phone-pad"
                   value={form.phone}
                   onChangeText={(v) => updateField('phone', v)}
@@ -131,7 +138,8 @@ export default function SignupScreen({ navigation }: any) {
                 <Text style={styles.inputLabel}>Password</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="••••••••"
+                  placeholder="Min. 4 characters"
+                  placeholderTextColor={colors.textMuted}
                   secureTextEntry
                   value={form.password}
                   onChangeText={(v) => updateField('password', v)}
@@ -139,10 +147,11 @@ export default function SignupScreen({ navigation }: any) {
               </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.inputLabel}>Location / Farm City</Text>
+                <Text style={styles.inputLabel}>Location / City</Text>
                 <TextInput
                   style={styles.input}
                   placeholder="e.g. Pollachi, Coimbatore"
+                  placeholderTextColor={colors.textMuted}
                   value={form.location}
                   onChangeText={(v) => updateField('location', v)}
                 />
