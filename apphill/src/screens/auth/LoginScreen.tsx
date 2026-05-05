@@ -23,15 +23,16 @@ import Animated, {
   withTiming 
 } from 'react-native-reanimated';
 import { useAuth } from '../../context/AuthContext';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../../theme/colors';
 import spacing from '../../theme/spacing';
 
 const { height } = Dimensions.get('window');
 
 const roles = [
-  { label: 'Farmer', value: 'farmer', emoji: '🌾' },
-  { label: 'Driver', value: 'driver', emoji: '🚜' },
-  { label: 'Customer', value: 'customer', emoji: '🛒' },
+  { label: 'Farmer', value: 'farmer', icon: 'tractor' },
+  { label: 'Driver', value: 'driver', icon: 'truck' },
+  { label: 'Customer', value: 'customer', icon: 'cart' },
 ];
 
 export default function LoginScreen({ navigation }: any) {
@@ -70,7 +71,7 @@ export default function LoginScreen({ navigation }: any) {
       {/* Premium Background Header */}
       <View style={styles.headerBg}>
         <Animated.View entering={FadeInUp.duration(1000).springify()} style={styles.logoContainer}>
-          <Text style={styles.logoEmoji}>🌱</Text>
+          <Icon name="leaf" style={styles.logoEmoji} color="#4CAF50" />
           <Text style={styles.logoText}>SmartHill</Text>
           <Text style={styles.logoSubtext}>PREMIUM LOGISTICS</Text>
         </Animated.View>
@@ -99,7 +100,7 @@ export default function LoginScreen({ navigation }: any) {
                     onPress={() => setRole(r.value)}
                     activeOpacity={0.7}
                   >
-                    <Text style={styles.roleEmoji}>{r.emoji}</Text>
+                    <Icon name={r.icon} style={styles.roleEmoji} color={isActive ? colors.primary : colors.textMuted} />
                     <Text style={[styles.roleLabel, isActive && styles.activeRoleLabel]}>{r.label}</Text>
                   </TouchableOpacity>
                 );
@@ -135,7 +136,7 @@ export default function LoginScreen({ navigation }: any) {
                     style={styles.eyeBtn}
                     onPress={() => setPasswordVisible(!passwordVisible)}
                   >
-                    <Text style={styles.eyeIcon}>{passwordVisible ? '👁️' : '🙈'}</Text>
+                    <Icon name={passwordVisible ? 'eye' : 'eye-off'} style={styles.eyeIcon} color={colors.textMuted} />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -176,19 +177,19 @@ export default function LoginScreen({ navigation }: any) {
                   style={styles.demoChip} 
                   onPress={() => fillDemo('9876543210', 'farmer')}
                 >
-                  <Text style={styles.demoChipText}>🌾 Farmer</Text>
+                  <Text style={styles.demoChipText}><Icon name="tractor" /> Farmer</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                   style={styles.demoChip} 
                   onPress={() => fillDemo('9876500000', 'driver')}
                 >
-                  <Text style={styles.demoChipText}>🚜 Driver</Text>
+                  <Text style={styles.demoChipText}><Icon name="truck" /> Driver</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                   style={styles.demoChip} 
                   onPress={() => fillDemo('9000000000', 'customer')}
                 >
-                  <Text style={styles.demoChipText}>🛒 Customer</Text>
+                  <Text style={styles.demoChipText}><Icon name="cart" /> Customer</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -280,9 +281,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.1,
     shadowRadius: 10,
-    elevation: 4,
+    elevation: 6,
+    zIndex: 1,
   },
   roleEmoji: {
     fontSize: 18,

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { colors, typography } from '../theme';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface ProofUploadProps {
   label: string;
@@ -18,7 +19,7 @@ export default function ProofUpload({ label, isUploaded, onPress }: ProofUploadP
         activeOpacity={0.7}
       >
         <View style={[styles.iconCircle, isUploaded && styles.uploadedIconCircle]}>
-          <Text style={styles.iconText}>{isUploaded ? '✓' : '📷'}</Text>
+          <Icon name={isUploaded ? 'check' : 'camera'} size={24} color={isUploaded ? '#FFF' : colors.primary} />
         </View>
         <View style={styles.textContainer}>
           <Text style={[styles.title, isUploaded && styles.uploadedTitle]}>

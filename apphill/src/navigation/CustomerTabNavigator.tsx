@@ -2,18 +2,31 @@
 import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../theme/colors';
 
 import CustomerDashboardScreen from '../screens/customer/CustomerDashboardScreen';
 import BuyProductsScreen from '../screens/customer/BuyProductsScreen';
 import RentVehicleScreen from '../screens/customer/RentVehicleScreen';
 import CustomerProfileScreen from '../screens/customer/CustomerProfileScreen';
+import OrderProductScreen from '../screens/customer/OrderProductScreen';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
-const TabIcon = ({ symbol, color, focused }: { symbol: string; color: string; focused: boolean }) => (
+function MarketStack() {
+  return (
+    <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Marketplace" component={BuyProductsScreen} />
+      <Stack.Screen name="OrderProduct" component={OrderProductScreen} />
+    </Stack.Navigator>
+  );
+}
+
+const TabIcon = ({ name, color, focused }: { name: string; color: string; focused: boolean }) => (
   <View style={[styles.iconContainer, focused && styles.activeIconContainer]}>
-    <Text style={[styles.tabIconText, { color }]}>{symbol}</Text>
+    <Icon name={name} size={22} color={color} />
   </View>
 );
 
@@ -34,16 +47,16 @@ export default function CustomerTabNavigator() {
         component={CustomerDashboardScreen}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: (props) => <TabIcon symbol="🏠" {...props} />,
+          tabBarIcon: (props) => <TabIcon name="home" {...props} />,
         }}
       />
 
       <Tab.Screen
-        name="BuyProducts"
-        component={BuyProductsScreen}
+        name="BuyProductsStack"
+        component={MarketStack}
         options={{
           tabBarLabel: 'Market',
-          tabBarIcon: (props) => <TabIcon symbol="🛍️" {...props} />,
+          tabBarIcon: (props) => <TabIcon name="store" {...props} />,
         }}
       />
 
@@ -52,7 +65,7 @@ export default function CustomerTabNavigator() {
         component={RentVehicleScreen}
         options={{
           tabBarLabel: 'Logistics',
-          tabBarIcon: (props) => <TabIcon symbol="🚚" {...props} />,
+          tabBarIcon: (props) => <TabIcon name="truck" {...props} />,
         }}
       />
 
@@ -61,7 +74,7 @@ export default function CustomerTabNavigator() {
         component={CustomerProfileScreen}
         options={{
           tabBarLabel: 'Profile',
-          tabBarIcon: (props) => <TabIcon symbol="👤" {...props} />,
+          tabBarIcon: (props) => <TabIcon name="account" {...props} />,
         }}
       />
     </Tab.Navigator>

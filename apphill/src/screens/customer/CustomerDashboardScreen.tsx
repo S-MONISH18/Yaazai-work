@@ -11,6 +11,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { farmerProducts } from '../../data/mockData';
 import colors from '../../theme/colors';
 
@@ -53,7 +54,7 @@ export default function CustomerDashboardScreen() {
         {/* ── Top Header ── */}
         <Animated.View entering={FadeInDown.delay(0).springify()} style={styles.topHeader}>
           <View>
-            <Text style={styles.greeting}>🌿 Good Morning!</Text>
+            <Text style={styles.greeting}><Icon name="leaf" size={12} /> Good Morning!</Text>
             <Text style={styles.headerTitle}>Farm Marketplace</Text>
             <Text style={styles.headerSub}>Fresh produce available near you</Text>
           </View>
@@ -67,7 +68,7 @@ export default function CustomerDashboardScreen() {
         <View style={styles.stickyBar}>
           {/* Search */}
           <Animated.View entering={FadeInDown.delay(80).springify()} style={styles.searchBox}>
-            <Text style={styles.searchIcon}>🔍</Text>
+            <Icon name="magnify" style={styles.searchIcon} />
             <TextInput
               style={styles.searchInput}
               placeholder="Search product, location, farmer..."
@@ -77,7 +78,7 @@ export default function CustomerDashboardScreen() {
             />
             {search.length > 0 && (
               <TouchableOpacity onPress={() => setSearch('')}>
-                <Text style={styles.clearText}>✕</Text>
+                <Icon name="close" style={styles.clearText} />
               </TouchableOpacity>
             )}
           </Animated.View>
@@ -88,7 +89,7 @@ export default function CustomerDashboardScreen() {
             onPress={() => setShowAvailableOnly(v => !v)}
           >
             <Text style={[styles.availToggleText, showAvailableOnly && styles.availToggleTextActive]}>
-              ✅ Available
+              <Icon name="check-circle-outline" size={12} /> Available
             </Text>
           </TouchableOpacity>
 
@@ -138,7 +139,7 @@ export default function CustomerDashboardScreen() {
         {/* ── Product Cards ── */}
         {filtered.length === 0 ? (
           <View style={styles.emptyState}>
-            <Text style={styles.emptyIcon}>🌾</Text>
+            <Icon name="tractor" style={styles.emptyIcon} />
             <Text style={styles.emptyTitle}>No products found</Text>
             <Text style={styles.emptySubtitle}>Try a different search or category</Text>
           </View>
@@ -158,7 +159,7 @@ export default function CustomerDashboardScreen() {
                 {/* Top Row: Emoji + Name + Status */}
                 <View style={styles.productTop}>
                   <View style={styles.emojiWrap}>
-                    <Text style={styles.productEmoji}>{item.emoji}</Text>
+                    <Icon name={item.iconName || 'food-apple'} size={26} color={colors.primary} />
                   </View>
                   <View style={styles.productInfo}>
                     <Text style={styles.productName}>{item.productName}</Text>
@@ -175,13 +176,13 @@ export default function CustomerDashboardScreen() {
 
                 {/* Location Row */}
                 <View style={styles.locationRow}>
-                  <Text style={styles.locationIcon}>📍</Text>
+                  <Icon name="map-marker-outline" style={styles.locationIcon} />
                   <View style={styles.locationInfo}>
                     <Text style={styles.locationText}>{item.location}</Text>
                     <Text style={styles.farmerText}>by {item.farmerName}</Text>
                   </View>
                   <View style={styles.harvestBadge}>
-                    <Text style={styles.harvestIcon}>🌱</Text>
+                    <Icon name="sprout" style={styles.harvestIcon} />
                     <Text style={styles.harvestText}>{item.harvestedOn}</Text>
                   </View>
                 </View>

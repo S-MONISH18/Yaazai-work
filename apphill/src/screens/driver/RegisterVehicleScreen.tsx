@@ -8,6 +8,7 @@ import AppCard from '../../components/AppCard';
 import InputField from '../../components/InputField';
 import PrimaryButton from '../../components/PrimaryButton';
 import Badge from '../../components/Badge';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function RegisterVehicleScreen() {
   const [available, setAvailable] = useState(true);
@@ -80,21 +81,21 @@ export default function RegisterVehicleScreen() {
               placeholder="your.email@example.com"
               value={formData.email}
               onChangeText={value => updateFormData('email', value)}
-              icon={<Text>📧</Text>}
+              icon={<Icon name="email" size={20} color={colors.textSecondary} />}
             />
             <InputField
               label="Phone Number *"
               placeholder="+91 98765 43210"
               value={formData.phone}
               onChangeText={value => updateFormData('phone', value)}
-              icon={<Text>📱</Text>}
+              icon={<Icon name="phone" size={20} color={colors.textSecondary} />}
             />
             <InputField
               label="Location *"
               placeholder="City, State"
               value={formData.location}
               onChangeText={value => updateFormData('location', value)}
-              icon={<Text>📍</Text>}
+              icon={<Icon name="map-marker" size={20} color={colors.textSecondary} />}
             />
           </AppCard>
         </View>
@@ -107,14 +108,14 @@ export default function RegisterVehicleScreen() {
               placeholder="e.g. Mahindra 575 DI"
               value={formData.vehicleModel}
               onChangeText={value => updateFormData('vehicleModel', value)}
-              icon={<Text>🚜</Text>}
+              icon={<Icon name="tractor" size={20} color={colors.textSecondary} />}
             />
             <InputField
               label="Registration Number *"
               placeholder="e.g. TN-36K-8077"
               value={formData.vehicleNumber}
               onChangeText={value => updateFormData('vehicleNumber', value)}
-              icon={<Text>🆔</Text>}
+              icon={<Icon name="card-account-details" size={20} color={colors.textSecondary} />}
             />
             <View style={styles.row}>
               <View style={styles.halfField}>
@@ -123,7 +124,7 @@ export default function RegisterVehicleScreen() {
                   placeholder="47"
                   value={formData.horsepower}
                   onChangeText={value => updateFormData('horsepower', value)}
-                  icon={<Text>⚡</Text>}
+                  icon={<Icon name="lightning-bolt" size={20} color={colors.textSecondary} />}
                 />
               </View>
               <View style={styles.halfField}>
@@ -132,7 +133,7 @@ export default function RegisterVehicleScreen() {
                   placeholder="Diesel"
                   value={formData.fuelType}
                   onChangeText={value => updateFormData('fuelType', value)}
-                  icon={<Text>⛽</Text>}
+                  icon={<Icon name="gas-station" size={20} color={colors.textSecondary} />}
                 />
               </View>
             </View>
@@ -150,7 +151,7 @@ export default function RegisterVehicleScreen() {
                   value={formData.hourlyRate}
                   onChangeText={value => updateFormData('hourlyRate', value)}
                   keyboardType="numeric"
-                  icon={<Text>🕐</Text>}
+                  icon={<Icon name="clock-outline" size={20} color={colors.textSecondary} />}
                 />
               </View>
               <View style={styles.halfField}>
@@ -160,7 +161,7 @@ export default function RegisterVehicleScreen() {
                   value={formData.dailyRate}
                   onChangeText={value => updateFormData('dailyRate', value)}
                   keyboardType="numeric"
-                  icon={<Text>📅</Text>}
+                  icon={<Icon name="calendar" size={20} color={colors.textSecondary} />}
                 />
               </View>
             </View>

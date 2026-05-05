@@ -12,11 +12,14 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import NetInfo from '@react-native-community/netinfo';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { useNavigation } from '@react-navigation/native';
 import { farmerProducts } from '../../data/mockData';
 import colors from '../../theme/colors';
 
 export default function BuyProductsScreen() {
+  const navigation = useNavigation<any>();
   const [isOfflineMode, setIsOfflineMode] = useState(false);
   const [products] = useState(farmerProducts);
   const [currentIP, setCurrentIP] = useState<string | null>(null);
@@ -99,7 +102,7 @@ export default function BuyProductsScreen() {
               </View>
               
               <View style={styles.farmerRow}>
-                <Text style={styles.farmerIcon}>👨‍🌾</Text>
+                <Icon name="tractor" style={styles.farmerIcon} />
                 <Text style={styles.farmerName}>{item.farmerName}</Text>
               </View>
 
@@ -122,7 +125,7 @@ export default function BuyProductsScreen() {
                 </View>
                 <TouchableOpacity 
                   style={styles.buyBtn}
-                  onPress={() => Alert.alert('Order Placed ✅', `Farmer ${item.farmerName} has been notified!`)}
+                  onPress={() => navigation.navigate('OrderProduct', { product: item })}
                   activeOpacity={0.8}
                 >
                   <Text style={styles.buyBtnText}>Buy Now</Text>
@@ -247,6 +250,7 @@ const styles = StyleSheet.create({
   farmerIcon: {
     fontSize: 14,
     marginRight: 4,
+    color: colors.textSecondary,
   },
   farmerName: {
     fontSize: 14,

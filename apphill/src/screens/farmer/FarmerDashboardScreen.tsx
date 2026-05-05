@@ -11,6 +11,7 @@ import {
   Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Animated, { FadeInDown, FadeInRight } from 'react-native-reanimated';
 import { vehicleListings, farmerProducts, ACTIVE_TRIPS } from '../../data/mockData';
 import colors from '../../theme/colors';
@@ -24,9 +25,9 @@ export default function FarmerDashboardScreen({ navigation }: any) {
   const activeTrip = ACTIVE_TRIPS[0];
 
   const stats = [
-    { label: 'Active Listings', value: '3', icon: '📦', color: '#E8F5E9' },
-    { label: 'Pending Orders', value: '12', icon: '🛒', color: '#E3F2FD' },
-    { label: 'Total Earnings', value: '₹42K', icon: '💰', color: '#FFF8E1' },
+    { label: 'Active Listings', value: '3', icon: 'package-variant', color: '#E8F5E9' },
+    { label: 'Pending Orders', value: '12', icon: 'cart-outline', color: '#E3F2FD' },
+    { label: 'Total Earnings', value: '₹42K', icon: 'cash', color: '#FFF8E1' },
   ];
 
   return (
@@ -37,12 +38,9 @@ export default function FarmerDashboardScreen({ navigation }: any) {
       <SafeAreaView style={styles.header} edges={['top']}>
         <View style={styles.headerContent}>
           <View>
-            <Text style={styles.greetingText}>Welcome back 👋</Text>
+            <Text style={styles.greetingText}>Welcome back <Icon name="hand-wave" size={14} color="#FFD700" /></Text>
             <Text style={styles.nameText}>{currentUser?.name || 'Siva Kumar'}</Text>
           </View>
-          <TouchableOpacity style={styles.profileCircle}>
-            <Text style={styles.profileEmoji}>👨‍🌾</Text>
-          </TouchableOpacity>
         </View>
       </SafeAreaView>
 
@@ -54,7 +52,7 @@ export default function FarmerDashboardScreen({ navigation }: any) {
         <Animated.View entering={FadeInDown.delay(200).springify()} style={styles.statsRow}>
           {stats.map((s, i) => (
             <View key={i} style={[styles.statCard, { backgroundColor: s.color }]}>
-              <Text style={styles.statIcon}>{s.icon}</Text>
+              <Icon name={s.icon} size={28} color={colors.text} style={styles.statIcon} />
               <Text style={styles.statValue}>{s.value}</Text>
               <Text style={styles.statLabel}>{s.label}</Text>
             </View>
@@ -104,7 +102,7 @@ export default function FarmerDashboardScreen({ navigation }: any) {
             style={[styles.actionCard, { backgroundColor: colors.primary }]}
             onPress={() => navigation.navigate('Vehicles')}
           >
-            <Text style={styles.actionEmoji}>🚜</Text>
+            <Icon name="tractor" size={32} color="#FFF" style={styles.actionEmoji} />
             <Text style={styles.actionText}>Book Transport</Text>
           </TouchableOpacity>
           
@@ -112,7 +110,7 @@ export default function FarmerDashboardScreen({ navigation }: any) {
             style={[styles.actionCard, styles.actionCardSell]}
             onPress={() => navigation.navigate('SellProducts')}
           >
-            <Text style={styles.actionEmoji}>🏷️</Text>
+            <Icon name="tag-outline" size={32} color="#FFF" style={styles.actionEmoji} />
             <Text style={styles.actionText}>Sell Produce</Text>
           </TouchableOpacity>
         </View>
@@ -120,7 +118,7 @@ export default function FarmerDashboardScreen({ navigation }: any) {
         {/* Recent Products */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Your Listings</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('SellProducts')}>
+          <TouchableOpacity onPress={() => navigation.navigate('MyProducts')}>
             <Text style={styles.seeAllText}>Manage All</Text>
           </TouchableOpacity>
         </View>
@@ -157,7 +155,7 @@ export default function FarmerDashboardScreen({ navigation }: any) {
             <TouchableOpacity key={v.id} style={styles.vehicleRow}>
               <View style={styles.vehicleInfo}>
                 <View style={styles.vIconBg}>
-                  <Text style={styles.vIcon}>🚛</Text>
+                  <Icon name="truck" size={24} color={colors.primary} />
                 </View>
                 <View>
                   <Text style={styles.vModel}>{v.vehicleModel}</Text>
@@ -166,7 +164,7 @@ export default function FarmerDashboardScreen({ navigation }: any) {
               </View>
               <View style={styles.vRight}>
                 <Text style={styles.vPrice}>₹{v.estimatedPrice}</Text>
-                <Text style={styles.vRating}>⭐ {v.rating}</Text>
+                <Text style={styles.vRating}><Icon name="star" size={12} color={colors.gold} /> {v.rating}</Text>
               </View>
             </TouchableOpacity>
           ))}
@@ -204,19 +202,6 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontWeight: '800',
     marginTop: 2,
-  },
-  profileCircle: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    backgroundColor: colors.primarySoft,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1.5,
-    borderColor: colors.border,
-  },
-  profileEmoji: {
-    fontSize: 22,
   },
   scrollContent: {
     paddingBottom: 120,

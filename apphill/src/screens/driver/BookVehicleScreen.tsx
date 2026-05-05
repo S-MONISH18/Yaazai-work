@@ -12,7 +12,9 @@ import {
   Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { farmerRequests } from '../../data/mockData';
 import colors from '../../theme/colors';
 export default function BookVehicleScreen({ route, navigation }: any) {
   const vehicle = route?.params?.vehicle || {
@@ -27,6 +29,11 @@ export default function BookVehicleScreen({ route, navigation }: any) {
 
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [showRequestDropdown, setShowRequestDropdown] = useState(false);
+
+  const fetchCurrentLocation = () => {
+    setPickupLocation('Current Location (Pollachi Farm)');
+  };
 
   const formatDateTime = (date: Date | null) =>
     date
@@ -83,7 +90,7 @@ export default function BookVehicleScreen({ route, navigation }: any) {
       >
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-            <Text style={styles.backEmoji}>⬅️</Text>
+            <Icon name="arrow-left" size={24} color={colors.text} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Book Transport</Text>
         </View>
@@ -91,7 +98,7 @@ export default function BookVehicleScreen({ route, navigation }: any) {
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
           <View style={styles.vehicleCard}>
             <View style={styles.vehicleIconBg}>
-              <Text style={styles.vehicleIcon}>🚜</Text>
+              <Icon name="tractor" size={28} color={colors.primary} />
             </View>
             <View>
               <Text style={styles.vehicleName}>{vehicle.model}</Text>
@@ -105,7 +112,7 @@ export default function BookVehicleScreen({ route, navigation }: any) {
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Pickup Location</Text>
               <View style={styles.inputWrapper}>
-                <Text style={styles.inputIcon}>📍</Text>
+                <Icon name="map-marker" size={20} color={colors.primary} style={styles.inputIcon} />
                 <TextInput
                   style={styles.input}
                   placeholder="Enter pickup location (e.g., Farm)"
@@ -113,27 +120,65 @@ export default function BookVehicleScreen({ route, navigation }: any) {
                   value={pickupLocation}
                   onChangeText={setPickupLocation}
                 />
+                <TouchableOpacity onPress={fetchCurrentLocation} style={styles.locationBtn}>
+                  <Icon name="crosshairs-gps" size={20} color={colors.primary} />
+                </TouchableOpacity>
               </View>
             </View>
 
-            <View style={styles.inputGroup}>
+            <View style={[styles.inputGroup, { zIndex: 10 }]}>
               <Text style={styles.label}>Drop-off Location</Text>
-              <View style={styles.inputWrapper}>
-                <Text style={styles.inputIcon}>🏁</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter destination (e.g., Market)"
-                  placeholderTextColor={colors.textMuted}
-                  value={dropoffLocation}
-                  onChangeText={setDropoffLocation}
-                />
-              </View>
+              <TouchableOpacity 
+                style={[styles.inputWrapper, { justifyContent: 'space-between' }]}
+                onPress={() => setShowRequestDropdown(!showRequestDropdown)}
+                activeOpacity={0.8}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+                  <Icon name="flag-checkered" size={20} color={colors.textSecondary} style={styles.inputIcon} />
+                  <Text style={[styles.input, { color: dropoffLocation ? colors.text : colors.textMuted, marginTop: 15 }]}>
+                    {dropoffLocation || 'Select Request'}
+                  </Text>
+                </View>
+                <Icon name={showRequestDropdown ? "chevron-up" : "chevron-down"} size={20} color={colors.textMuted} />
+              </TouchableOpacity>
+              
+              {showRequestDropdown && (
+                <View style={styles.dropdownContainer}>
+                  <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
+                    {farmerRequests.map((req) => {
+                      const isMatch = req.requestedQuantity === req.availableQuantity;
+                      return (
+                        <TouchableOpacity 
+                          key={req.id} 
+                          style={styles.dropdownItem}
+                          onPress={() => {
+                            setDropoffLocation(req.destination);
+                            setLoadDetails(`${req.requestedQuantity}${req.unit} ${req.productName}`);
+                            setShowRequestDropdown(false);
+                          }}
+                        >
+                          <View style={styles.reqMain}>
+                            <Text style={styles.reqDest}>{req.destination}</Text>
+                            <Text style={styles.reqProduct}>
+                              {req.requestedQuantity}{req.unit} {req.productName} 
+                              <Text style={styles.reqAvail}> (Avail: {req.availableQuantity}{req.unit})</Text>
+                            </Text>
+                          </View>
+                          {isMatch && (
+                            <Icon name="check-circle" size={20} color="#4CAF50" style={styles.reqTick} />
+                          )}
+                        </TouchableOpacity>
+                      );
+                    })}
+                  </ScrollView>
+                </View>
+              )}
             </View>
 
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Vegetable Type & Weight</Text>
               <View style={styles.inputWrapper}>
-                <Text style={styles.inputIcon}>📦</Text>
+                <Icon name="package-variant" size={20} color={colors.textSecondary} style={styles.inputIcon} />
                 <TextInput
                   style={styles.input}
                   placeholder="e.g., 500kg Tomatoes"
@@ -147,7 +192,7 @@ export default function BookVehicleScreen({ route, navigation }: any) {
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Transport Date & Time</Text>
               <TouchableOpacity style={styles.timePickerBtn} onPress={() => setShowDatePicker(true)}>
-                <Text style={styles.inputIcon}>🕒</Text>
+                <Icon name="clock-outline" size={20} color={colors.primary} style={styles.inputIcon} />
                 <Text style={[styles.timeValue, !transportDate && styles.timeValuePlaceholder]}>
                   {formatDateTime(transportDate)}
                 </Text>
@@ -191,7 +236,7 @@ const styles = StyleSheet.create({
   backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#FFF', alignItems: 'center', justifyContent: 'center', marginRight: 15, elevation: 2 },
   backEmoji: { fontSize: 18 },
   headerTitle: { fontSize: 22, fontWeight: '800', color: colors.text },
-  content: { paddingHorizontal: 20, paddingBottom: 40 },
+  content: { paddingHorizontal: 20, paddingBottom: 120 },
   vehicleCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFF', padding: 20, borderRadius: 24, marginBottom: 25, elevation: 3 },
   vehicleIconBg: { width: 56, height: 56, borderRadius: 18, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center', marginRight: 18 },
   vehicleIcon: { fontSize: 28 },
@@ -217,4 +262,51 @@ const styles = StyleSheet.create({
   totalValue: { fontSize: 20, fontWeight: '900', color: colors.primary },
   confirmBtn: { backgroundColor: colors.primary, height: 60, borderRadius: 20, alignItems: 'center', justifyContent: 'center', elevation: 4 },
   confirmBtnText: { color: '#FFF', fontSize: 18, fontWeight: '800' },
+  locationBtn: { padding: 5 },
+  dropdownContainer: {
+    backgroundColor: '#FFF',
+    borderWidth: 1,
+    borderColor: colors.borderLight,
+    borderRadius: 12,
+    marginTop: 8,
+    maxHeight: 200,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    position: 'absolute',
+    top: 75,
+    left: 0,
+    right: 0,
+    zIndex: 100,
+  },
+  dropdownItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.borderLight,
+  },
+  reqMain: {
+    flex: 1,
+  },
+  reqDest: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: colors.text,
+  },
+  reqProduct: {
+    fontSize: 12,
+    color: colors.textSecondary,
+    marginTop: 2,
+  },
+  reqAvail: {
+    color: colors.primary,
+    fontWeight: '600',
+  },
+  reqTick: {
+    marginLeft: 10,
+  },
 });

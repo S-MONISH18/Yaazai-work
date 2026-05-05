@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { vehicleListings, ACTIVE_TRIPS } from '../../data/mockData';
 import colors from '../../theme/colors';
 
@@ -64,7 +65,7 @@ function LiveTrackingCard({ trip }: { trip: any }) {
         </View>
         <View style={styles.routeLineWrap}>
           <View style={styles.routeLine} />
-          <Text style={styles.routeArrow}>🚚</Text>
+          <Icon name="truck-delivery" style={styles.routeArrow} />
           <View style={styles.routeLine} />
         </View>
         <View style={styles.routePoint}>
@@ -88,11 +89,11 @@ function LiveTrackingCard({ trip }: { trip: any }) {
       {/* Cargo & Vehicle */}
       <View style={styles.infoRow}>
         <View style={styles.infoChip}>
-          <Text style={styles.infoChipIcon}>📦</Text>
+          <Icon name="package-variant-closed" style={styles.infoChipIcon} />
           <Text style={styles.infoChipText}>{trip.cargo}</Text>
         </View>
         <View style={styles.infoChip}>
-          <Text style={styles.infoChipIcon}>🚛</Text>
+          <Icon name="truck" style={styles.infoChipIcon} />
           <Text style={styles.infoChipText}>{trip.vehicle}</Text>
         </View>
       </View>
@@ -105,7 +106,7 @@ function LiveTrackingCard({ trip }: { trip: any }) {
       <View style={styles.contactCard}>
         <View style={styles.contactLeft}>
           <View style={[styles.contactAvatar, { backgroundColor: '#E3F2FD' }]}>
-            <Text style={styles.contactAvatarText}>🧑‍✈️</Text>
+            <Icon name="card-account-details" style={styles.contactAvatarText} />
           </View>
           <View>
             <Text style={styles.contactRole}>Driver</Text>
@@ -120,13 +121,13 @@ function LiveTrackingCard({ trip }: { trip: any }) {
             style={styles.revealBtn}
             onPress={() => setDriverRevealed(v => !v)}
           >
-            <Text style={styles.revealBtnText}>{driverRevealed ? '🔒' : '👁️'}</Text>
+            <Icon name={driverRevealed ? "lock" : "eye"} style={styles.revealBtnText} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.callBtn}
             onPress={() => callNumber(trip.driverPhone, trip.driverName)}
           >
-            <Text style={styles.callBtnText}>📞</Text>
+            <Icon name="phone" style={styles.callBtnText} />
           </TouchableOpacity>
         </View>
       </View>
@@ -135,7 +136,7 @@ function LiveTrackingCard({ trip }: { trip: any }) {
       <View style={[styles.contactCard, { marginTop: 10 }]}>
         <View style={styles.contactLeft}>
           <View style={[styles.contactAvatar, { backgroundColor: '#E8F5E9' }]}>
-            <Text style={styles.contactAvatarText}>🌾</Text>
+            <Icon name="tractor" style={styles.contactAvatarText} />
           </View>
           <View>
             <Text style={styles.contactRole}>Farmer</Text>
@@ -150,13 +151,13 @@ function LiveTrackingCard({ trip }: { trip: any }) {
             style={styles.revealBtn}
             onPress={() => setFarmerRevealed(v => !v)}
           >
-            <Text style={styles.revealBtnText}>{farmerRevealed ? '🔒' : '👁️'}</Text>
+            <Icon name={farmerRevealed ? "lock" : "eye"} style={styles.revealBtnText} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.callBtn}
             onPress={() => callNumber(trip.farmerPhone, trip.farmerName)}
           >
-            <Text style={styles.callBtnText}>📞</Text>
+            <Icon name="phone" style={styles.callBtnText} />
           </TouchableOpacity>
         </View>
       </View>
@@ -213,14 +214,14 @@ export default function RentVehicleScreen() {
             >
               <View style={styles.cardHeader}>
                 <View style={styles.vIconBg}>
-                  <Text style={styles.vIcon}>🚚</Text>
+                  <Icon name="truck-outline" style={styles.vIcon} />
                 </View>
                 <View style={styles.headerMain}>
                   <Text style={styles.name}>{item.vehicleModel}</Text>
                   <Text style={styles.subText}>{item.vehicleType} • {item.registrationNumber}</Text>
                 </View>
                 <View style={styles.ratingBadge}>
-                  <Text style={styles.ratingText}>⭐ {item.rating}</Text>
+                  <Text style={styles.ratingText}><Icon name="star" size={10} color={colors.gold} /> {item.rating}</Text>
                 </View>
               </View>
 

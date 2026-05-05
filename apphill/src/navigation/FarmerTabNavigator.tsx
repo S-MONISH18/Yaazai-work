@@ -1,10 +1,11 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import colors from '../theme/colors';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Screens
 import FarmerDashboardScreen from '../screens/farmer/FarmerDashboardScreen';
@@ -13,13 +14,14 @@ import AvailableVehiclesScreen from '../screens/farmer/AvailableVehiclesScreen';
 import SellProductsScreen from '../screens/farmer/SellProductsScreen';
 import FarmerProfileScreen from '../screens/farmer/FarmerProfileScreen';
 import BookVehicleScreen from '../screens/driver/BookVehicleScreen';
+import MyProductsScreen from '../screens/farmer/MyProductsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const TabIcon = ({ symbol, color, focused }: { symbol: string; color: string; focused: boolean }) => (
+const TabIcon = ({ name, color, focused }: { name: string; color: string; focused: boolean }) => (
   <View style={[styles.iconContainer, focused && styles.activeIconContainer]}>
-    <Text style={[styles.iconText, { color }]}>{symbol}</Text>
+    <Icon name={name} size={22} color={color} />
   </View>
 );
 
@@ -33,6 +35,21 @@ function VehicleStack() {
       <Stack.Screen
         name="BookVehicle"
         component={BookVehicleScreen}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function HomeStack() {
+  return (
+    <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name="Dashboard"
+        component={FarmerDashboardScreen}
+      />
+      <Stack.Screen
+        name="MyProducts"
+        component={MyProductsScreen}
       />
     </Stack.Navigator>
   );
@@ -52,10 +69,10 @@ export default function FarmerTabNavigator() {
     >
       <Tab.Screen
         name="FarmerHome"
-        component={FarmerDashboardScreen}
+        component={HomeStack}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: (props) => <TabIcon symbol="🏠" {...props} />,
+          tabBarIcon: (props) => <TabIcon name="home" {...props} />,
         }}
       />
 
@@ -65,7 +82,7 @@ export default function FarmerTabNavigator() {
         component={VehicleStack}
         options={{
           tabBarLabel: 'Logistics',
-          tabBarIcon: (props) => <TabIcon symbol="🚜" {...props} />,
+          tabBarIcon: (props) => <TabIcon name="tractor" {...props} />,
         }}
       />
 
@@ -74,7 +91,7 @@ export default function FarmerTabNavigator() {
         component={SellProductsScreen}
         options={{
           tabBarLabel: 'Sell',
-          tabBarIcon: (props) => <TabIcon symbol="💰" {...props} />,
+          tabBarIcon: (props) => <TabIcon name="cash" {...props} />,
         }}
       />
 
@@ -83,7 +100,7 @@ export default function FarmerTabNavigator() {
         component={FarmerProfileScreen}
         options={{
           tabBarLabel: 'Profile',
-          tabBarIcon: (props) => <TabIcon symbol="👤" {...props} />,
+          tabBarIcon: (props) => <TabIcon name="account" {...props} />,
         }}
       />
     </Tab.Navigator>

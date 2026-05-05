@@ -3,7 +3,7 @@ import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../theme/colors';
 
 // Screens
@@ -18,9 +18,9 @@ import BookVehicleScreen from '../screens/driver/BookVehicleScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const TabIcon = ({ symbol, color, focused }: { symbol: string; color: string; focused: boolean }) => (
+const TabIcon = ({ name, color, focused }: { name: string; color: string; focused: boolean }) => (
   <View style={[styles.iconContainer, focused && styles.activeIconContainer]}>
-    <Text style={[styles.tabIconText, { color }]}>{symbol}</Text>
+    <Icon name={name} size={22} color={color} />
   </View>
 );
 
@@ -59,7 +59,7 @@ export default function DriverNavigator() {
         component={DriverHomeStack}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: (props) => <TabIcon symbol="🏠" {...props} />,
+          tabBarIcon: (props) => <TabIcon name="home" {...props} />,
         }}
       />
 
@@ -68,7 +68,7 @@ export default function DriverNavigator() {
         component={TripRequestsScreen}
         options={{
           tabBarLabel: 'Requests',
-          tabBarIcon: (props) => <TabIcon symbol="📩" {...props} />,
+          tabBarIcon: (props) => <TabIcon name="email" {...props} />,
         }}
       />
 
@@ -77,7 +77,7 @@ export default function DriverNavigator() {
         component={DriverVehicleStack}
         options={{
           tabBarLabel: 'Fleet',
-          tabBarIcon: (props) => <TabIcon symbol="🚚" {...props} />,
+          tabBarIcon: (props) => <TabIcon name="truck" {...props} />,
         }}
       />
 
@@ -86,7 +86,7 @@ export default function DriverNavigator() {
         component={RegisterVehicleScreen}
         options={{
           tabBarLabel: 'Add',
-          tabBarIcon: (props) => <TabIcon symbol="➕" {...props} />,
+          tabBarIcon: (props) => <TabIcon name="plus" {...props} />,
         }}
       />
 
@@ -95,7 +95,7 @@ export default function DriverNavigator() {
         component={DriverProfileScreen}
         options={{
           tabBarLabel: 'Profile',
-          tabBarIcon: (props) => <TabIcon symbol="👤" {...props} />,
+          tabBarIcon: (props) => <TabIcon name="account" {...props} />,
         }}
       />
     </Tab.Navigator>

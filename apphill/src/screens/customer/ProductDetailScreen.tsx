@@ -13,7 +13,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import Animated, { FadeInDown } from 'react-native-reanimated';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../../theme/colors';
 
 const STATUS_CONFIG: Record<string, { bg: string; color: string }> = {
@@ -84,7 +85,7 @@ export default function ProductDetailScreen() {
         {/* ── Header ── */}
         <View style={styles.header}>
           <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-            <Text style={styles.backIcon}>←</Text>
+            <Icon name="arrow-left" style={styles.backIcon} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Product Details</Text>
           <View style={{ width: 40 }} />
@@ -96,7 +97,7 @@ export default function ProductDetailScreen() {
           <Animated.View entering={FadeInDown.delay(0).springify()} style={styles.heroCard}>
             <View style={styles.heroTop}>
               <View style={styles.heroEmoji}>
-                <Text style={styles.heroEmojiText}>{product.emoji}</Text>
+                <Icon name={product.iconName || 'food-apple'} size={40} color={colors.primary} />
               </View>
               <View style={[styles.statusBadge, { backgroundColor: statusStyle.bg }]}>
                 <Text style={[styles.statusText, { color: statusStyle.color }]}>
@@ -117,19 +118,19 @@ export default function ProductDetailScreen() {
           {/* ── Info Grid ── */}
           <Animated.View entering={FadeInDown.delay(80).springify()} style={styles.infoGrid}>
             <View style={styles.infoItem}>
-              <Text style={styles.infoIcon}>📦</Text>
+              <Icon name="package-variant-closed" style={styles.infoIcon} />
               <Text style={styles.infoLabel}>Available</Text>
               <Text style={styles.infoValue}>{product.quantity} {product.unit}</Text>
             </View>
             <View style={styles.infoDivider} />
             <View style={styles.infoItem}>
-              <Text style={styles.infoIcon}>📍</Text>
+              <Icon name="map-marker-outline" style={styles.infoIcon} />
               <Text style={styles.infoLabel}>District</Text>
               <Text style={styles.infoValue}>{product.district}</Text>
             </View>
             <View style={styles.infoDivider} />
             <View style={styles.infoItem}>
-              <Text style={styles.infoIcon}>🌱</Text>
+              <Icon name="sprout" style={styles.infoIcon} />
               <Text style={styles.infoLabel}>Harvested</Text>
               <Text style={styles.infoValue}>{product.harvestedOn}</Text>
             </View>
@@ -137,11 +138,11 @@ export default function ProductDetailScreen() {
 
           {/* ── Farmer & Location Card ── */}
           <Animated.View entering={FadeInDown.delay(120).springify()} style={styles.detailCard}>
-            <Text style={styles.detailCardTitle}>📋 Farmer & Location</Text>
+            <Text style={styles.detailCardTitle}><Icon name="clipboard-text-outline" size={14} /> Farmer & Location</Text>
 
             <View style={styles.detailRow}>
               <View style={styles.detailIconWrap}>
-                <Text style={styles.detailRowIcon}>🧑‍🌾</Text>
+                <Icon name="account-cowboy-hat" style={styles.detailRowIcon} />
               </View>
               <View>
                 <Text style={styles.detailRowLabel}>Farmer Name</Text>
@@ -153,7 +154,7 @@ export default function ProductDetailScreen() {
 
             <View style={styles.detailRow}>
               <View style={styles.detailIconWrap}>
-                <Text style={styles.detailRowIcon}>📍</Text>
+                <Icon name="map-marker" style={styles.detailRowIcon} />
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={styles.detailRowLabel}>Farm Location</Text>
@@ -165,7 +166,7 @@ export default function ProductDetailScreen() {
 
             <View style={styles.detailRow}>
               <View style={styles.detailIconWrap}>
-                <Text style={styles.detailRowIcon}>🗺️</Text>
+                <Icon name="map-outline" style={styles.detailRowIcon} />
               </View>
               <View>
                 <Text style={styles.detailRowLabel}>District</Text>
@@ -176,7 +177,7 @@ export default function ProductDetailScreen() {
 
           {/* ── Stock Info Card ── */}
           <Animated.View entering={FadeInDown.delay(160).springify()} style={styles.detailCard}>
-            <Text style={styles.detailCardTitle}>📊 Stock Information</Text>
+            <Text style={styles.detailCardTitle}><Icon name="chart-bar" size={14} /> Stock Information</Text>
 
             {/* Stock Bar */}
             <View style={styles.stockBarRow}>
@@ -221,11 +222,11 @@ export default function ProductDetailScreen() {
           {/* ── Order Section ── */}
           {product.available ? (
             <Animated.View entering={FadeInDown.delay(200).springify()} style={styles.orderCard}>
-              <Text style={styles.orderCardTitle}>🛒 Place Your Order</Text>
+              <Text style={styles.orderCardTitle}><Icon name="cart-outline" size={16} /> Place Your Order</Text>
               <Text style={styles.orderCardSub}>Enter the quantity you need (min. 25 kg)</Text>
 
               <View style={[styles.qtyInputWrap, qtyError ? styles.qtyInputError : null]}>
-                <Text style={styles.qtyInputIcon}>⚖️</Text>
+                <Icon name="scale-balance" style={styles.qtyInputIcon} />
                 <TextInput
                   style={styles.qtyInput}
                   placeholder="Enter quantity (e.g. 100)"
@@ -240,7 +241,7 @@ export default function ProductDetailScreen() {
               {/* Error message */}
               {qtyError ? (
                 <View style={styles.errorRow}>
-                  <Text style={styles.errorIcon}>⚠️</Text>
+                  <Icon name="alert-circle-outline" style={styles.errorIcon} />
                   <Text style={styles.errorText}>{qtyError}</Text>
                 </View>
               ) : null}
@@ -274,7 +275,7 @@ export default function ProductDetailScreen() {
             </Animated.View>
           ) : (
             <Animated.View entering={FadeInDown.delay(200).springify()} style={styles.unavailCard}>
-              <Text style={styles.unavailIcon}>❌</Text>
+              <Icon name="close-circle-outline" style={styles.unavailIcon} />
               <Text style={styles.unavailTitle}>Product Unavailable</Text>
               <Text style={styles.unavailSub}>
                 This product is currently out of stock. Check back later or contact the farmer directly.
